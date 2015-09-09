@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="ServiceExceptionReport">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="ServiceException"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.ServiceExceptionReport"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.ServiceExceptionReport">
+    <xs:attribute name="version" default="1.1.1">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="1.1.1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="ServiceException">
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="attlist.ServiceException"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.ServiceException">
+    <xs:attribute name="code"/>
+  </xs:attributeGroup>
+</xs:schema>

@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+  <xs:element name="WMT_MS_Capabilities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Service"/>
+        <xs:element ref="Capability"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.WMT_MS_Capabilities"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.WMT_MS_Capabilities">
+    <xs:attribute name="version" default="1.1.0">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="1.1.0"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="updateSequence"/>
+  </xs:attributeGroup>
+  <!-- Elements used in multiple places. -->
+  <!-- The Name is typically for machine-to-machine communication. -->
+  <xs:element name="Name" type="xs:string"/>
+  <!-- The Title is for informative display to a human. -->
+  <xs:element name="Title" type="xs:string"/>
+  <!-- The abstract is a longer narrative description of an object. -->
+  <xs:element name="Abstract" type="xs:string"/>
+  <!--
+    An OnlineResource is typically an HTTP URL.  The URL is placed in the
+    xlink:href attribute.  The xmlns:xlink attribute is a required XML namespace
+    declaration.
+  -->
+  <xs:element name="OnlineResource">
+    <xs:complexType>
+      <xs:attributeGroup ref="attlist.OnlineResource"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.OnlineResource">
+    <xs:attribute ref="xlink:type" default="simple"/>
+    <xs:attribute ref="xlink:href" use="required"/>
+  </xs:attributeGroup>
+  <!-- A container for listing an available format's MIME type. -->
+  <xs:element name="Format" type="xs:string"/>
+  <!-- General service metadata. -->
+  <xs:element name="Service">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element ref="Title"/>
+        <xs:element minOccurs="0" ref="Abstract"/>
+        <xs:element minOccurs="0" ref="KeywordList"/>
+        <xs:element ref="OnlineResource"/>
+        <xs:element minOccurs="0" ref="ContactInformation"/>
+        <xs:element minOccurs="0" ref="Fees"/>
+        <xs:element minOccurs="0" ref="AccessConstraints"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- List of keywords or keyword phrases to help catalog searching. -->
+  <xs:element name="KeywordList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Keyword"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- A single keyword or phrase. -->
+  <xs:element name="Keyword" type="xs:string"/>
+  <!-- Information about a contact person for the service. -->
+  <xs:element name="ContactInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="ContactPersonPrimary"/>
+        <xs:element minOccurs="0" ref="ContactPosition"/>
+        <xs:element minOccurs="0" ref="ContactAddress"/>
+        <xs:element minOccurs="0" ref="ContactVoiceTelephone"/>
+        <xs:element minOccurs="0" ref="ContactFacsimileTelephone"/>
+        <xs:element minOccurs="0" ref="ContactElectronicMailAddress"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- The primary contact person. -->
+  <xs:element name="ContactPersonPrimary">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ContactPerson"/>
+        <xs:element ref="ContactOrganization"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- The person to contact. -->
+  <xs:element name="ContactPerson" type="xs:string"/>
+  <!-- The organization supplying the service. -->
+  <xs:element name="ContactOrganization" type="xs:string"/>
+  <!-- The position title for the contact person. -->
+  <xs:element name="ContactPosition" type="xs:string"/>
+  <!-- The address for the contact supplying the service. -->
+  <xs:element name="ContactAddress">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AddressType"/>
+        <xs:element ref="Address"/>
+        <xs:element ref="City"/>
+        <xs:element ref="StateOrProvince"/>
+        <xs:element ref="PostCode"/>
+        <xs:element ref="Country"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- The type of address. -->
+  <xs:element name="AddressType" type="xs:string"/>
+  <!-- The street address. -->
+  <xs:element name="Address" type="xs:string"/>
+  <!-- The address city. -->
+  <xs:element name="City" type="xs:string"/>
+  <!-- The state or province. -->
+  <xs:element name="StateOrProvince" type="xs:string"/>
+  <!-- The zip or postal code. -->
+  <xs:element name="PostCode" type="xs:string"/>
+  <!-- The address country. -->
+  <xs:element name="Country" type="xs:string"/>
+  <!-- Contact telephone number. -->
+  <xs:element name="ContactVoiceTelephone" type="xs:string"/>
+  <!-- The contact fax number. -->
+  <xs:element name="ContactFacsimileTelephone" type="xs:string"/>
+  <!-- The e-mail address for the contact. -->
+  <xs:element name="ContactElectronicMailAddress" type="xs:string"/>
+  <!-- Elements indicating what fees or access constraints are imposed. -->
+  <xs:element name="Fees" type="xs:string"/>
+  <xs:element name="AccessConstraints" type="xs:string"/>
+  <!--
+    A Capability lists available request types, how exceptions
+    may be reported, and whether any vendor-specific capabilities are defined.  It
+    also includes an optional list of map layers available from this server.
+  -->
+  <xs:element name="Capability">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Request"/>
+        <xs:element ref="Exception"/>
+        <xs:element minOccurs="0" ref="UserDefinedSymbolization"/>
+        <xs:element minOccurs="0" ref="Layer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Available WMS Operations are listed in a Request element. -->
+  <xs:element name="Request">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="GetCapabilities"/>
+        <xs:element ref="GetMap"/>
+        <xs:element minOccurs="0" ref="GetFeatureInfo"/>
+        <xs:element minOccurs="0" ref="DescribeLayer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    For each operation offered by the server, list the available output
+    formats and the online resource.
+  -->
+  <xs:element name="GetCapabilities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Format"/>
+        <xs:element maxOccurs="unbounded" ref="DCPType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMap">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Format"/>
+        <xs:element maxOccurs="unbounded" ref="DCPType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFeatureInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Format"/>
+        <xs:element maxOccurs="unbounded" ref="DCPType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DescribeLayer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Format"/>
+        <xs:element maxOccurs="unbounded" ref="DCPType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    Available Distributed Computing Platforms (DCPs) are
+    listed here.  At present, only HTTP is defined.
+  -->
+  <xs:element name="DCPType" type="HTTP"/>
+  <!-- Available HTTP request methods.  One or both may be supported. -->
+  <xs:complexType name="HTTP">
+    <xs:sequence>
+      <xs:element ref="HTTP"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="HTTP">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="Get"/>
+        <xs:element ref="Post"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!-- URL prefix for each HTTP request method. -->
+  <xs:element name="Get">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Post">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- An Exception element indicates which error-reporting formats are supported. -->
+  <xs:element name="Exception">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Format"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Optional user-defined symbolization (used only by SLD-enabled WMSes). -->
+  <xs:element name="UserDefinedSymbolization">
+    <xs:complexType>
+      <xs:attributeGroup ref="attlist.UserDefinedSymbolization"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.UserDefinedSymbolization">
+    <xs:attribute name="SupportSLD" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="UserLayer" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="UserStyle" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="RemoteWFS" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <!-- Nested list of zero or more map Layers offered by this server. -->
+  <xs:element name="Layer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Name"/>
+        <xs:element ref="Title"/>
+        <xs:element minOccurs="0" ref="Abstract"/>
+        <xs:element minOccurs="0" ref="KeywordList"/>
+        <xs:element minOccurs="0" ref="SRS"/>
+        <xs:element minOccurs="0" ref="LatLonBoundingBox"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="BoundingBox"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Dimension"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Extent"/>
+        <xs:element minOccurs="0" ref="Attribution"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="AuthorityURL"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Identifier"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="MetadataURL"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="DataURL"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="FeatureListURL"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Style"/>
+        <xs:element minOccurs="0" ref="ScaleHint"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Layer"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.Layer"/>
+    </xs:complexType>
+  </xs:element>
+  <!--  Optional attributes -->
+  <xs:attributeGroup name="attlist.Layer">
+    <xs:attribute name="queryable" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="cascaded"/>
+    <xs:attribute name="opaque" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="noSubsets" default="0">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="fixedWidth"/>
+    <xs:attribute name="fixedHeight"/>
+  </xs:attributeGroup>
+  <!-- Listing of available Spatial Reference Systems (SRS). -->
+  <xs:element name="SRS" type="xs:string"/>
+  <!--
+    The LatLonBoundingBox attributes indicate the edges of the enclosing
+    rectangle in latitude/longitude decimal degrees (as in SRS EPSG:4326 [WGS1984
+    lat/lon]).
+  -->
+  <xs:element name="LatLonBoundingBox">
+    <xs:complexType>
+      <xs:attributeGroup ref="attlist.LatLonBoundingBox"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.LatLonBoundingBox">
+    <xs:attribute name="minx" use="required"/>
+    <xs:attribute name="miny" use="required"/>
+    <xs:attribute name="maxx" use="required"/>
+    <xs:attribute name="maxy" use="required"/>
+  </xs:attributeGroup>
+  <!--
+    The BoundingBox attributes indicate the edges of the bounding box
+    in units of the specified spatial reference system.
+  -->
+  <xs:element name="BoundingBox">
+    <xs:complexType>
+      <xs:attributeGroup ref="attlist.BoundingBox"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.BoundingBox">
+    <xs:attribute name="SRS" use="required"/>
+    <xs:attribute name="minx" use="required"/>
+    <xs:attribute name="miny" use="required"/>
+    <xs:attribute name="maxx" use="required"/>
+    <xs:attribute name="maxy" use="required"/>
+    <xs:attribute name="resx"/>
+    <xs:attribute name="resy"/>
+  </xs:attributeGroup>
+  <!-- The Dimension element declares the _existence_ of a dimension. -->
+  <xs:element name="Dimension">
+    <xs:complexType>
+      <xs:attributeGroup ref="attlist.Dimension"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.Dimension">
+    <xs:attribute name="name" use="required"/>
+    <xs:attribute name="units" use="required"/>
+    <xs:attribute name="unitSymbol"/>
+  </xs:attributeGroup>
+  <!-- The Extent element indicates what _values_ along a dimension are valid. -->
+  <xs:element name="Extent">
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="attlist.Extent"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.Extent">
+    <xs:attribute name="name" use="required"/>
+    <xs:attribute name="default"/>
+  </xs:attributeGroup>
+  <!--
+    Attribution indicates the provider of a Layer or collection of Layers.
+    The provider's URL, descriptive title string, and/or logo image URL may be
+    supplied.  Client applications may choose to display one or more of these
+    items.  A format element indicates the MIME type of the logo image located at
+    LogoURL.  The logo image's width and height assist client applications in
+    laying out space to display the logo.
+  -->
+  <xs:element name="Attribution">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Title"/>
+        <xs:element minOccurs="0" ref="OnlineResource"/>
+        <xs:element minOccurs="0" ref="LogoURL"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogoURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.LogoURL"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.LogoURL">
+    <xs:attribute name="width" use="required" type="xs:NMTOKEN"/>
+    <xs:attribute name="height" use="required" type="xs:NMTOKEN"/>
+  </xs:attributeGroup>
+  <!--
+    A Map Server may use zero or more MetadataURL elements to offer detailed,
+    standardized metadata about the data underneath a particular layer. The type
+    attribute indicates the standard to which the metadata complies.  Two types
+    are defined at present: 'TC211' = ISO TC211 19115; 'FGDC' = FGDC CSDGM.  The
+    format element indicates how the metadata is structured.
+  -->
+  <xs:element name="MetadataURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.MetadataURL"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.MetadataURL">
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="TC211"/>
+          <xs:enumeration value="FGDC"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <!--
+    A Map Server may use zero or more Identifier elements to list ID numbers
+    or labels defined by a particular Authority.  For example, the Global Change
+    Master Directory (gcmd.gsfc.nasa.gov) defines a DIF_ID label for every
+    dataset.  The authority name and explanatory URL are defined in a separate
+    AuthorityURL element, which may be defined once and inherited by subsidiary
+    layers.  Identifiers themselves are not inherited.
+  -->
+  <xs:element name="AuthorityURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.AuthorityURL"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.AuthorityURL">
+    <xs:attribute name="name" use="required" type="xs:NMTOKEN"/>
+  </xs:attributeGroup>
+  <xs:element name="Identifier">
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="attlist.Identifier"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.Identifier">
+    <xs:attribute name="authority" use="required"/>
+  </xs:attributeGroup>
+  <!--
+    A Map Server may use DataURL to offer more information about the data
+    underneath a particular layer. While the semantics are not well-defined, as
+    long as the results of an HTTP GET request against the DataURL are properly
+    MIME-typed, Viewer Clients and Cascading Map Servers can make use of this.
+  -->
+  <xs:element name="DataURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    A Map Server may use FeatureListURL to point to a list of the features
+    represented in a Layer.
+  -->
+  <xs:element name="FeatureListURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    A Style element lists the name by which a style is requested and a
+    human-readable title for pick lists, optionally (and ideally) provides a
+    human-readable description, and optionally gives a style URL.
+  -->
+  <xs:element name="Style">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element ref="Title"/>
+        <xs:element minOccurs="0" ref="Abstract"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="LegendURL"/>
+        <xs:element minOccurs="0" ref="StyleSheetURL"/>
+        <xs:element minOccurs="0" ref="StyleURL"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    A Map Server may use zero or more LegendURL elements to provide an
+    image(s) of a legend relevant to each Style of a Layer.  The Format element
+    indicates the MIME type of the legend. Width and height attributes are
+    provided to assist client applications in laying out space to display the
+    legend.
+  -->
+  <xs:element name="LegendURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="attlist.LegendURL"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.LegendURL">
+    <xs:attribute name="width" use="required" type="xs:NMTOKEN"/>
+    <xs:attribute name="height" use="required" type="xs:NMTOKEN"/>
+  </xs:attributeGroup>
+  <!-- StyleSheeetURL provides symbology information foreach Style of a Layer. -->
+  <xs:element name="StyleSheetURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    A Map Server may use StyleURL to offer more information about the data or
+    symbology underlying a particular Style. While the semantics are not
+    well-defined, as long as the results of an HTTP GET request against the
+    StyleURL are properly MIME-typed, Viewer Clients and Cascading Map Servers can
+    make use of this. A possible use could be to allow a Map Server to provide
+    legend information.
+  -->
+  <xs:element name="StyleURL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Format"/>
+        <xs:element ref="OnlineResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    Minimum and maximum scale hints for which it is appropriate to
+    display this layer.
+  -->
+  <xs:element name="ScaleHint">
+    <xs:complexType>
+      <xs:attributeGroup ref="attlist.ScaleHint"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="attlist.ScaleHint">
+    <xs:attribute name="min" use="required"/>
+    <xs:attribute name="max" use="required"/>
+  </xs:attributeGroup>
+</xs:schema>
