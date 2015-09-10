@@ -1,4 +1,4 @@
-# CKAN CORS Proxy
+# CKAN Harvester
 
 ## Installation
 
@@ -10,48 +10,6 @@ npm install -g '52North/ckan-harvester'
 
 ```sh
 npm install -g bunyan
-```
-
-### systemd
-Add a `node` user:
-```sh
-useradd -rUmd /var/lib/node -s /bin/bash node
-```
-
-Create a unit file:
-```sh
-cat > /etc/systemd/system/ckan-harvester.service <<EOF
-[Unit]
-Description=CKAN Proxy Server
-After=network.target
-Requires=network.target
-
-[Service]
-ExecStart=/usr/bin/ckan-harvester /etc/ckan-harvester.json
-User=node
-Group=node
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOF
-```
-
-Create a minimal configuration in `/etc/ckan-harvester.json`:
-```sh
-echo '{}' > /etc/ckan-harvester.json
-```
-
-Start and enable the `ckan-harvester` service:
-```sh
-systemctl daemon-reload
-systemctl enable ckan-harvester.service
-systemctl start ckan-harvester.service
-```
-
-To view the log files (requires `bunyan`):
-```sh
-journalctl -f -u ckan-harvester.service -o cat | bunyan
 ```
 
 ## Configuration
@@ -66,35 +24,7 @@ Call `ckan-harvester` with the path to a JSON configuration file as the first ar
   "logging": {
     "level": "info"
   },
-  "proxy": {
-    "port": 9090,
-    "cors": {
-      "allowedHeaders": [
-        "accept",
-        "accept-charset",
-        "accept-encoding",
-        "accept-language",
-        "authorization",
-        "content-length",
-        "content-type",
-        "host",
-        "origin",
-        "proxy-connection",
-        "referer",
-        "user-agent",
-        "x-requested-with"
-      ],
-      "allowedMethods": [
-        "HEAD",
-        "POST",
-        "GET",
-        "PUT",
-        "PATCH",
-        "DELETE"
-      ]
-    }
-  },
-  "whitelist": {
+  "harvester": {
     "ckan": {
       "enabled": false,
       "url": "http://demo.ckan.org",
