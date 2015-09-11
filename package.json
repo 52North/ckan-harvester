@@ -29,7 +29,8 @@
         "extend": "^2.0.1",
         "request-promise": "^0.4.2",
         "jsonix": "2.3.1",
-        "jsonix-schema-compiler": "2.3.1"
+        "jsonix-schema-compiler": "2.3.1",
+        "moment": "2.10.6"
     },
     "devDependencies": {
         "grunt": "^0.4.5",
